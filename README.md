@@ -2,6 +2,8 @@
 
 MELSEC iQ-Rシリーズ（三菱電機シーケンサ）のCPUユニット内蔵Ethernetポート部 **「シンプルCPU通信機能」** の設定CSVファイルを、生成・検証・解析する [Claude Code](https://claude.com/claude-code) 向け Skill です。
 
+<img width="1104" height="691" alt="Image" src="https://github.com/user-attachments/assets/a2f1473f-2483-4c6e-ae39-2d270285ac1c" />
+
 GX Works3 が "シンプルCPU通信設定" 画面でインポート／エクスポートする UTF-16LE BOM付タブ区切りCSV を **バイト一致レベル** で生成します。
 
 出典: **MELSEC iQ-R Ethernetユーザーズマニュアル(応用編) 1.15節 (p.220-242)**
