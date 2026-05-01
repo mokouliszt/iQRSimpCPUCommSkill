@@ -1,0 +1,325 @@
+{
+  "_comment": "MELSEC iQ-R Simple CPU Communication device ranges per partner CPU type. Source: MELSEC iQ-R Ethernet User's Manual (Application) section 1.15. Pages 224-228.",
+
+  "device_type_codes": {
+    "16": "三菱iQ-R(内蔵Ethernet)",
+    "17": "三菱Q(内蔵Ethernet)",
+    "18": "三菱L(内蔵Ethernet)",
+    "19": "三菱iQ-F(内蔵Ethernet)",
+    "20": "三菱iQ-L(内蔵Ethernet)",
+    "22": "三菱Q(Ethernetユニット)",
+    "23": "三菱L(Ethernetユニット)",
+    "25": "三菱A/AnS(Ethernetユニット)",
+    "26": "三菱FX3(Ethernetブロック・アダプタ)",
+    "30": "SLMP対応機器(QnA互換3Eフレーム)"
+  },
+
+  "device_type_alias": {
+    "iQ-R": 16, "iQ-R-builtin": 16, "R": 16,
+    "Q-builtin": 17, "Q": 17,
+    "L-builtin": 18, "L": 18,
+    "iQ-F": 19, "iQ-F-builtin": 19,
+    "iQ-L": 20, "iQ-L-builtin": 20,
+    "Q-EU": 22, "Q-Ethernet-Unit": 22,
+    "L-EU": 23, "L-Ethernet-Unit": 23,
+    "A": 25, "AnS": 25, "A-AnS": 25,
+    "FX3": 26,
+    "SLMP": 30
+  },
+
+  "port_rules": {
+    "_comment": "Port number rules per device type. 'forbidden' means the field MUST be empty for this device type.",
+    "16": { "port": "forbidden", "local_port": "forbidden" },
+    "17": { "port": "forbidden", "local_port": "forbidden" },
+    "18": { "port": "forbidden", "local_port": "forbidden" },
+    "19": { "port": "forbidden", "local_port": "forbidden" },
+    "20": { "port": "forbidden", "local_port": "forbidden" },
+    "22": { "port": "forbidden", "local_port": "forbidden" },
+    "23": { "port": "forbidden", "local_port": "forbidden" },
+    "25": { "port": [[256, 65534]], "local_port": [[1, 4999], [5010, 65534]] },
+    "26": { "port": [[1025, 5548], [5552, 65534]], "local_port": [[1, 4999], [5010, 65534]] },
+    "30": { "port": [[1, 4999], [5010, 65534]], "local_port": [[1, 4999], [5010, 65534]] }
+  },
+
+  "_devices_doc": "For each partner device type (機器種別), the supported source/destination devices and their valid number ranges. 'base' is 10 (decimal) or 16 (hex). 'kind' is 'bit' or 'word'. 'min'/'max' are the inclusive integer bounds (in base 10 internally; UI shows them in 'base'). 'pattern_only' restricts the device to a specific 通信パターン on the partner side: 'Read' means only allowed when 通信パターン=Read (because the device sits on the partner side as the source — i.e., timer/counter contacts which can only be read); 'Write' means only allowed when 通信パターン=Write (when partner is destination — which our manual says is NOT allowed for these). For the 自局 (own iQ-R) side, a separate own-station ruleset is used.",
+
+  "own_station": {
+    "_comment": "自局 (R120CPU + NZ2MC-16MBS — maximum theoretical ranges). The actual usable ranges depend on CPU model and SRAM cassette. Validation is permissive at this layer; users should ensure their own CPU's parameters allow the indices.",
+    "bit": {
+      "X":   { "base": 16, "min": 0, "max": 12287 },
+      "Y":   { "base": 16, "min": 0, "max": 12287 },
+      "M":   { "base": 10, "min": 0, "max": 161882111 },
+      "L":   { "base": 10, "min": 0, "max": 32767 },
+      "F":   { "base": 10, "min": 0, "max": 32767 },
+      "B":   { "base": 16, "min": 0, "max": 161873919 },
+      "TS":  { "base": 10, "min": 0, "max": 8993439, "pattern_only": "Write" },
+      "TC":  { "base": 10, "min": 0, "max": 8993439, "pattern_only": "Write" },
+      "STS": { "base": 10, "min": 0, "max": 8993439, "pattern_only": "Write" },
+      "STC": { "base": 10, "min": 0, "max": 8993439, "pattern_only": "Write" },
+      "CS":  { "base": 10, "min": 0, "max": 8993439, "pattern_only": "Write" },
+      "CC":  { "base": 10, "min": 0, "max": 8993439, "pattern_only": "Write" },
+      "SB":  { "base": 16, "min": 0, "max": 161873919 },
+      "SM":  { "base": 10, "min": 0, "max": 4095 }
+    },
+    "word": {
+      "D":   { "base": 10, "min": 0, "max": 10117631 },
+      "W":   { "base": 16, "min": 0, "max": 10117631 },
+      "TN":  { "base": 10, "min": 0, "max": 8993439 },
+      "STN": { "base": 10, "min": 0, "max": 8993439 },
+      "CN":  { "base": 10, "min": 0, "max": 8993439 },
+      "SW":  { "base": 16, "min": 0, "max": 10117631 },
+      "SD":  { "base": 10, "min": 0, "max": 4095 },
+      "R":   { "base": 10, "min": 0, "max": 32767 },
+      "ZR":  { "base": 10, "min": 0, "max": 10027007 },
+      "RD":  { "base": 10, "min": 0, "max": 1048575 }
+    }
+  },
+
+  "partner_devices": {
+    "_comment": "Per partner device-type code, the supported devices and ranges. pattern_only='Read' means the device can ONLY be specified when 通信パターン=Read (these are timer/counter contacts on the partner side which are read-only).",
+
+    "16": {
+      "_comment": "三菱iQ-R(内蔵Ethernet) - same as own station max, but TS/TC/STS/STC/CS/CC are Read-only on partner side.",
+      "bit": {
+        "X":   { "base": 16, "min": 0, "max": 12287 },
+        "Y":   { "base": 16, "min": 0, "max": 12287 },
+        "M":   { "base": 10, "min": 0, "max": 161882111 },
+        "L":   { "base": 10, "min": 0, "max": 32767 },
+        "F":   { "base": 10, "min": 0, "max": 32767 },
+        "B":   { "base": 16, "min": 0, "max": 161873919 },
+        "TS":  { "base": 10, "min": 0, "max": 8993439, "pattern_only": "Read" },
+        "TC":  { "base": 10, "min": 0, "max": 8993439, "pattern_only": "Read" },
+        "STS": { "base": 10, "min": 0, "max": 8993439, "pattern_only": "Read" },
+        "STC": { "base": 10, "min": 0, "max": 8993439, "pattern_only": "Read" },
+        "CS":  { "base": 10, "min": 0, "max": 8993439, "pattern_only": "Read" },
+        "CC":  { "base": 10, "min": 0, "max": 8993439, "pattern_only": "Read" },
+        "SB":  { "base": 16, "min": 0, "max": 161873919 },
+        "SM":  { "base": 10, "min": 0, "max": 4095 }
+      },
+      "word": {
+        "D":   { "base": 10, "min": 0, "max": 10117631 },
+        "W":   { "base": 16, "min": 0, "max": 10117631 },
+        "TN":  { "base": 10, "min": 0, "max": 8993439 },
+        "STN": { "base": 10, "min": 0, "max": 8993439 },
+        "CN":  { "base": 10, "min": 0, "max": 8993439 },
+        "SW":  { "base": 16, "min": 0, "max": 10117631 },
+        "SD":  { "base": 10, "min": 0, "max": 4095 },
+        "R":   { "base": 10, "min": 0, "max": 32767 },
+        "ZR":  { "base": 10, "min": 0, "max": 10027007 },
+        "RD":  { "base": 10, "min": 0, "max": 1048575 }
+      }
+    },
+
+    "17": {
+      "_comment": "三菱Q(内蔵Ethernet) / 三菱Q(Ethernetユニット). Q26UDV + Q4MCA-8MBS max.",
+      "bit": {
+        "X":  { "base": 16, "min": 0, "max": 8191 },
+        "Y":  { "base": 16, "min": 0, "max": 8191 },
+        "M":  { "base": 10, "min": 0, "max": 61439 },
+        "L":  { "base": 10, "min": 0, "max": 32767 },
+        "F":  { "base": 10, "min": 0, "max": 32767 },
+        "B":  { "base": 16, "min": 0, "max": 61439 },
+        "TS": { "base": 10, "min": 0, "max": 32767, "pattern_only": "Read" },
+        "TC": { "base": 10, "min": 0, "max": 32767, "pattern_only": "Read" },
+        "STS":{ "base": 10, "min": 0, "max": 32767, "pattern_only": "Read" },
+        "STC":{ "base": 10, "min": 0, "max": 32767, "pattern_only": "Read" },
+        "CS": { "base": 10, "min": 0, "max": 32767, "pattern_only": "Read" },
+        "CC": { "base": 10, "min": 0, "max": 32767, "pattern_only": "Read" },
+        "SB": { "base": 16, "min": 0, "max": 32767 },
+        "SM": { "base": 10, "min": 0, "max": 2047 }
+      },
+      "word": {
+        "D":  { "base": 10, "min": 0, "max": 4910079 },
+        "W":  { "base": 16, "min": 0, "max": 4910079 },
+        "TN": { "base": 10, "min": 0, "max": 32767 },
+        "STN":{ "base": 10, "min": 0, "max": 32767 },
+        "CN": { "base": 10, "min": 0, "max": 32767 },
+        "SW": { "base": 16, "min": 0, "max": 32767 },
+        "SD": { "base": 10, "min": 0, "max": 2047 },
+        "R":  { "base": 10, "min": 0, "max": 32767 },
+        "ZR": { "base": 10, "min": 0, "max": 4849663 }
+      }
+    },
+
+    "22": {
+      "_alias_of": "17"
+    },
+
+    "18": {
+      "_comment": "三菱L(内蔵Ethernet) / 三菱L(Ethernetユニット). L26CPU max.",
+      "bit": {
+        "X":  { "base": 16, "min": 0, "max": 8191 },
+        "Y":  { "base": 16, "min": 0, "max": 8191 },
+        "M":  { "base": 10, "min": 0, "max": 61439 },
+        "L":  { "base": 10, "min": 0, "max": 32767 },
+        "F":  { "base": 10, "min": 0, "max": 32767 },
+        "B":  { "base": 16, "min": 0, "max": 61439 },
+        "TS": { "base": 10, "min": 0, "max": 25471, "pattern_only": "Read" },
+        "TC": { "base": 10, "min": 0, "max": 25471, "pattern_only": "Read" },
+        "STS":{ "base": 10, "min": 0, "max": 25471, "pattern_only": "Read" },
+        "STC":{ "base": 10, "min": 0, "max": 25471, "pattern_only": "Read" },
+        "CS": { "base": 10, "min": 0, "max": 25471, "pattern_only": "Read" },
+        "CC": { "base": 10, "min": 0, "max": 25471, "pattern_only": "Read" },
+        "SB": { "base": 16, "min": 0, "max": 32767 },
+        "SM": { "base": 10, "min": 0, "max": 2047 }
+      },
+      "word": {
+        "D":  { "base": 10, "min": 0, "max": 421887 },
+        "W":  { "base": 16, "min": 0, "max": 421887 },
+        "TN": { "base": 10, "min": 0, "max": 25471 },
+        "STN":{ "base": 10, "min": 0, "max": 25471 },
+        "CN": { "base": 10, "min": 0, "max": 25471 },
+        "SW": { "base": 16, "min": 0, "max": 28671 },
+        "SD": { "base": 10, "min": 0, "max": 2047 },
+        "R":  { "base": 10, "min": 0, "max": 32767 },
+        "ZR": { "base": 10, "min": 0, "max": 393215 }
+      }
+    },
+
+    "23": {
+      "_alias_of": "18"
+    },
+
+    "19": {
+      "_comment": "三菱iQ-F(内蔵Ethernet). X/Y in 8進数 (octal).",
+      "bit": {
+        "X":  { "base": 8, "min": 0, "max": 1023 },
+        "Y":  { "base": 8, "min": 0, "max": 1023 },
+        "M":  { "base": 10, "min": 0, "max": 32767 },
+        "L":  { "base": 10, "min": 0, "max": 32767 },
+        "F":  { "base": 10, "min": 0, "max": 32767 },
+        "B":  { "base": 16, "min": 0, "max": 32767 },
+        "TS": { "base": 10, "min": 0, "max": 1023, "pattern_only": "Read" },
+        "TC": { "base": 10, "min": 0, "max": 1023, "pattern_only": "Read" },
+        "STS":{ "base": 10, "min": 0, "max": 1023, "pattern_only": "Read" },
+        "STC":{ "base": 10, "min": 0, "max": 1023, "pattern_only": "Read" },
+        "CS": { "base": 10, "min": 0, "max": 1023, "pattern_only": "Read" },
+        "CC": { "base": 10, "min": 0, "max": 1023, "pattern_only": "Read" },
+        "SB": { "base": 16, "min": 0, "max": 32767 },
+        "SM": { "base": 10, "min": 0, "max": 9999 }
+      },
+      "word": {
+        "D":  { "base": 10, "min": 0, "max": 7999 },
+        "W":  { "base": 16, "min": 0, "max": 32767 },
+        "TN": { "base": 10, "min": 0, "max": 1023 },
+        "STN":{ "base": 10, "min": 0, "max": 1023 },
+        "CN": { "base": 10, "min": 0, "max": 1023 },
+        "SW": { "base": 16, "min": 0, "max": 32767 },
+        "SD": { "base": 10, "min": 0, "max": 11999 },
+        "R":  { "base": 10, "min": 0, "max": 32767 }
+      }
+    },
+
+    "20": {
+      "_comment": "三菱iQ-L(内蔵Ethernet). L16HCPU max.",
+      "bit": {
+        "X":  { "base": 16, "min": 0, "max": 12287 },
+        "Y":  { "base": 16, "min": 0, "max": 12287 },
+        "M":  { "base": 10, "min": 0, "max": 14065663 },
+        "L":  { "base": 10, "min": 0, "max": 32767 },
+        "F":  { "base": 10, "min": 0, "max": 32767 },
+        "B":  { "base": 16, "min": 0, "max": 14065663 },
+        "TS": { "base": 10, "min": 0, "max": 781407, "pattern_only": "Read" },
+        "TC": { "base": 10, "min": 0, "max": 781407, "pattern_only": "Read" },
+        "STS":{ "base": 10, "min": 0, "max": 781407, "pattern_only": "Read" },
+        "STC":{ "base": 10, "min": 0, "max": 781407, "pattern_only": "Read" },
+        "CS": { "base": 10, "min": 0, "max": 781407, "pattern_only": "Read" },
+        "CC": { "base": 10, "min": 0, "max": 781407, "pattern_only": "Read" },
+        "SB": { "base": 16, "min": 0, "max": 14065663 },
+        "SM": { "base": 10, "min": 0, "max": 4095 }
+      },
+      "word": {
+        "D":  { "base": 10, "min": 0, "max": 879103 },
+        "W":  { "base": 16, "min": 0, "max": 14065663 },
+        "SW": { "base": 16, "min": 0, "max": 14065663 },
+        "TN": { "base": 10, "min": 0, "max": 781407 },
+        "STN":{ "base": 10, "min": 0, "max": 781407 },
+        "CN": { "base": 10, "min": 0, "max": 781407 },
+        "SD": { "base": 10, "min": 0, "max": 4095 },
+        "R":  { "base": 10, "min": 0, "max": 32767 },
+        "ZR": { "base": 10, "min": 0, "max": 819199 },
+        "RD": { "base": 10, "min": 0, "max": 1048575 }
+      }
+    },
+
+    "25": {
+      "_comment": "三菱A/AnS(Ethernetユニット). A4UCPU max. M/D 9000~9255 are CPU-specific (per manual).",
+      "bit": {
+        "X":  { "base": 16, "min": 0, "max": 2047 },
+        "Y":  { "base": 16, "min": 0, "max": 2047 },
+        "M":  { "base": 10, "min": 0, "max": 8191, "extra_ranges": [[9000, 9255]] },
+        "B":  { "base": 16, "min": 0, "max": 4095 }
+      },
+      "word": {
+        "D":  { "base": 10, "min": 0, "max": 6143, "extra_ranges": [[9000, 9255]] },
+        "W":  { "base": 16, "min": 0, "max": 4095 },
+        "R":  { "base": 10, "min": 0, "max": 8191 }
+      }
+    },
+
+    "26": {
+      "_comment": "三菱FX3(Ethernetブロック・アダプタ). X/Y in 8進数 (octal).",
+      "bit": {
+        "X": { "base": 8, "min": 0, "max": 255 },
+        "Y": { "base": 8, "min": 0, "max": 255 },
+        "M": { "base": 10, "min": 0, "max": 7679, "extra_ranges": [[8000, 8511]] }
+      },
+      "word": {
+        "D": { "base": 10, "min": 0, "max": 8511 },
+        "R": { "base": 10, "min": 0, "max": 32767 }
+      }
+    },
+
+    "30": {
+      "_comment": "SLMP対応機器(QnA互換3Eフレーム). Per-device manual rules. Ranges below are upper bounds matching iQ-R; actual partner ranges depend on the SLMP device.",
+      "bit": {
+        "X":  { "base": 16, "min": 0, "max": 161873919 },
+        "Y":  { "base": 16, "min": 0, "max": 161873919 },
+        "M":  { "base": 10, "min": 0, "max": 161882111 },
+        "L":  { "base": 10, "min": 0, "max": 32767 },
+        "F":  { "base": 10, "min": 0, "max": 32767 },
+        "B":  { "base": 16, "min": 0, "max": 161873919 },
+        "TS": { "base": 10, "min": 0, "max": 8993439, "pattern_only": "Read" },
+        "TC": { "base": 10, "min": 0, "max": 8993439, "pattern_only": "Read" },
+        "STS":{ "base": 10, "min": 0, "max": 8993439, "pattern_only": "Read" },
+        "STC":{ "base": 10, "min": 0, "max": 8993439, "pattern_only": "Read" },
+        "CS": { "base": 10, "min": 0, "max": 8993439, "pattern_only": "Read" },
+        "CC": { "base": 10, "min": 0, "max": 8993439, "pattern_only": "Read" },
+        "SB": { "base": 16, "min": 0, "max": 161873919 },
+        "SM": { "base": 10, "min": 0, "max": 4095 }
+      },
+      "word": {
+        "D":  { "base": 10, "min": 0, "max": 10117631 },
+        "W":  { "base": 16, "min": 0, "max": 10117631 },
+        "TN": { "base": 10, "min": 0, "max": 8993439 },
+        "STN":{ "base": 10, "min": 0, "max": 8993439 },
+        "CN": { "base": 10, "min": 0, "max": 8993439 },
+        "SW": { "base": 16, "min": 0, "max": 10117631 },
+        "SD": { "base": 10, "min": 0, "max": 4095 },
+        "R":  { "base": 10, "min": 0, "max": 32767 },
+        "ZR": { "base": 10, "min": 0, "max": 10027007 }
+      }
+    }
+  },
+
+  "header_constants": {
+    "ip_format_values": ["DEC", "HEX"],
+    "device_assignment_values": ["Points/Start", "Start/End"],
+    "initial_comm_values": ["Enable", "Disable"],
+    "comm_pattern_values": ["Read", "Write"],
+    "schedule_values_csv": ["0", "1"],
+    "_schedule_meaning": "0=要求時 (request), 1=定期 (periodic)",
+    "tcp_udp_values": ["UDP"],
+    "comm_start_wait_min_sec": 0,
+    "comm_start_wait_max_sec": 255,
+    "interval_min_ms": 10,
+    "interval_max_ms": 65535,
+    "target_cpu_min": 0,
+    "target_cpu_max": 8,
+    "setting_no_min": 1,
+    "setting_no_max": 64,
+    "max_total_words_per_file": 8192,
+    "max_words_per_setting": 512,
+    "max_bit_points_per_setting": 8192
+  }
+}

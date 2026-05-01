@@ -1,0 +1,57 @@
+{
+  "_doc": "交信相手=SLMP対応機器(30)。port/local_port は [1-4999]/[5010-65534] が必須。option_hex は iQ-Rプロジェクトでは空欄必須。",
+  "header": {
+    "file_version": "1",
+    "title": "slmp-test",
+    "target_unit": "R08CPU",
+    "local_ip": "10.0.0.1",
+    "ip_format": "DEC",
+    "device_assignment": "Start/End",
+    "comm_start_wait": 0,
+    "initial_comm": "Enable"
+  },
+  "settings": [
+    {
+      "no": 1,
+      "pattern": "Read",
+      "schedule": "periodic",
+      "interval": 1000,
+      "target": {
+        "device_type": "SLMP",
+        "ip": "10.0.0.100",
+        "tcp_udp": "UDP",
+        "port": 4999,
+        "local_port": 6000,
+        "cpu_no": 0
+      },
+      "word_device": {
+        "points": 100,
+        "src": {"type": "D", "start": 0, "end": 99},
+        "dst": {"type": "D", "start": 1000, "end": 1099}
+      },
+      "timeout_ms": 3000,
+      "retry_count": 5,
+      "error_monitor_sec": 120,
+      "comment": "SLMP D100ワード読出"
+    },
+    {
+      "no": 2,
+      "pattern": "Write",
+      "schedule": "request",
+      "target": {
+        "device_type": 30,
+        "ip": "10.0.0.100",
+        "tcp_udp": "UDP",
+        "port": 5010,
+        "local_port": 6001,
+        "cpu_no": 0
+      },
+      "word_device": {
+        "points": 50,
+        "src": {"type": "W", "start": "0", "end": "31"},
+        "dst": {"type": "W", "start": "100", "end": "131"}
+      },
+      "comment": "SLMP W50ワード書込(要求時)"
+    }
+  ]
+}

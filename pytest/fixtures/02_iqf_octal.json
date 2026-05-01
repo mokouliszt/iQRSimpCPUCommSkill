@@ -1,0 +1,57 @@
+{
+  "_doc": "交信相手=iQ-F(19)。X/Yは8進数。iQ-FはRead/Writeともに対応。",
+  "header": {
+    "file_version": "1",
+    "title": "iqf-test",
+    "target_unit": "R04CPU",
+    "local_ip": "192.168.10.100",
+    "ip_format": "DEC",
+    "device_assignment": "Start/End",
+    "comm_start_wait": 5,
+    "initial_comm": "Disable"
+  },
+  "settings": [
+    {
+      "no": 1,
+      "pattern": "Read",
+      "schedule": "periodic",
+      "interval": 200,
+      "target": {
+        "device_type": "iQ-F",
+        "ip": "192.168.10.50",
+        "tcp_udp": "UDP",
+        "cpu_no": 0
+      },
+      "bit_device": {
+        "points": 32,
+        "src": {"type": "X", "start": "0",  "end": "37"},
+        "dst": {"type": "M", "start": 0,  "end": 31}
+      },
+      "comment": "iQ-F X 8進 0-37 (=10進0-31)"
+    },
+    {
+      "no": 2,
+      "pattern": "Write",
+      "schedule": "periodic",
+      "interval": 500,
+      "target": {
+        "device_type": 19,
+        "ip": "192.168.10.50",
+        "tcp_udp": "UDP",
+        "cpu_no": 0
+      },
+      "bit_device": {
+        "points": 16,
+        "src": {"type": "Y", "start": 0,  "end": 15},
+        "dst": {"type": "Y", "start": "0",  "end": "17"}
+      },
+      "word_device": {
+        "points": 10,
+        "src": {"type": "D", "start": 100, "end": 109},
+        "dst": {"type": "D", "start": 200, "end": 209}
+      },
+      "error_monitor_sec": 60,
+      "comment": "iQ-F Y 8進17(=15) + D 10ワード"
+    }
+  ]
+}

@@ -1,0 +1,74 @@
+{
+  "_doc": "iQ-R同士のシンプルな構成。Read(X 16ビット) + Write(D 2ワード) + Write(W 2ワード)。example_config.jsonとほぼ同等。",
+  "header": {
+    "file_version": "1",
+    "title": "test",
+    "target_unit": "R00CPU",
+    "local_ip": "192.168.3.39",
+    "ip_format": "DEC",
+    "device_assignment": "Start/End",
+    "comm_start_wait": 255,
+    "initial_comm": "Enable"
+  },
+  "settings": [
+    {
+      "no": 1,
+      "pattern": "Read",
+      "schedule": "periodic",
+      "interval": 100,
+      "target": {
+        "device_type": "iQ-R",
+        "ip": "127.0.0.1",
+        "tcp_udp": "UDP",
+        "cpu_no": 0
+      },
+      "bit_device": {
+        "points": 16,
+        "src": {"type": "X", "start": "0",  "end": "F"},
+        "dst": {"type": "X", "start": "0",  "end": "F"}
+      },
+      "timeout_ms": 1000,
+      "retry_count": 3,
+      "error_monitor_sec": 30,
+      "comment": "テスト"
+    },
+    {
+      "no": 2,
+      "pattern": "Write",
+      "schedule": "request",
+      "target": {
+        "device_type": 16,
+        "ip": "127.0.0.1",
+        "tcp_udp": "UDP",
+        "cpu_no": 4
+      },
+      "word_device": {
+        "points": 2,
+        "src": {"type": "D", "start": "0", "end": "1"},
+        "dst": {"type": "D", "start": "0", "end": "1"}
+      },
+      "timeout_ms": 1000,
+      "retry_count": 3,
+      "comment": "ああ"
+    },
+    {
+      "no": 3,
+      "pattern": "Write",
+      "schedule": "request",
+      "target": {
+        "device_type": 16,
+        "ip": "127.0.0.1",
+        "tcp_udp": "UDP",
+        "cpu_no": 4
+      },
+      "word_device": {
+        "points": 2,
+        "src": {"type": "W", "start": "0", "end": "1"},
+        "dst": {"type": "W", "start": "0", "end": "1"}
+      },
+      "timeout_ms": 1000,
+      "retry_count": 3,
+      "comment": "ああ"
+    }
+  ]
+}

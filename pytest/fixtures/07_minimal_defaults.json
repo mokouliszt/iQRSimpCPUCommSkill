@@ -1,0 +1,23 @@
+{
+  "_doc": "ヘッダー・設定とも最小限のキーだけ指定し、残りはデフォルトに任せる。",
+  "header": {
+    "target_unit": "R04CPU",
+    "local_ip": "192.168.3.39"
+  },
+  "settings": [
+    {
+      "no": 1,
+      "pattern": "Read",
+      "schedule": "periodic",
+      "interval": 100,
+      "target": {
+        "device_type": "iQ-R",
+        "ip": "192.168.3.40"
+      },
+      "word_device": {
+        "src": {"type": "D", "start": 0, "end": 99},
+        "dst": {"type": "D", "start": 0, "end": 99}
+      }
+    }
+  ]
+}

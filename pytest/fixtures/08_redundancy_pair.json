@@ -1,0 +1,57 @@
+{
+  "_doc": "二重化システム（プロセスCPU）を想定。同一相手に対しA系/B系で異なるlocal_port。FX3と通信。",
+  "header": {
+    "file_version": "1",
+    "title": "redundancy",
+    "target_unit": "R08PCPU",
+    "local_ip": "192.168.5.10",
+    "ip_format": "DEC",
+    "device_assignment": "Start/End",
+    "comm_start_wait": 0,
+    "initial_comm": "Enable"
+  },
+  "settings": [
+    {
+      "no": 1,
+      "pattern": "Read",
+      "schedule": "periodic",
+      "interval": 100,
+      "target": {
+        "device_type": "FX3",
+        "ip": "192.168.5.50",
+        "tcp_udp": "UDP",
+        "port": 5000,
+        "local_port": 1500,
+        "cpu_no": 0
+      },
+      "word_device": {
+        "points": 16,
+        "src": {"type": "D", "start": 0, "end": 15},
+        "dst": {"type": "D", "start": 0, "end": 15}
+      },
+      "error_monitor_sec": 30,
+      "comment": "A系用"
+    },
+    {
+      "no": 2,
+      "pattern": "Read",
+      "schedule": "periodic",
+      "interval": 100,
+      "target": {
+        "device_type": "FX3",
+        "ip": "192.168.5.50",
+        "tcp_udp": "UDP",
+        "port": 5000,
+        "local_port": 1501,
+        "cpu_no": 0
+      },
+      "word_device": {
+        "points": 16,
+        "src": {"type": "D", "start": 0, "end": 15},
+        "dst": {"type": "D", "start": 100, "end": 115}
+      },
+      "error_monitor_sec": 30,
+      "comment": "B系用"
+    }
+  ]
+}

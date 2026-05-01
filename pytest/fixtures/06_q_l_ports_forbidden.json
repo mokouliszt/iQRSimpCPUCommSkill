@@ -1,0 +1,68 @@
+{
+  "_doc": "交信相手=Q(17), L(18)。port/local_portは空欄必須。タイマ接点(TS)はRead時のみ相手側に置ける。",
+  "header": {
+    "file_version": "1",
+    "title": "q-l-test",
+    "target_unit": "R04CPU",
+    "local_ip": "192.168.1.10",
+    "ip_format": "DEC",
+    "device_assignment": "Start/End",
+    "comm_start_wait": 0,
+    "initial_comm": "Disable"
+  },
+  "settings": [
+    {
+      "no": 1,
+      "pattern": "Read",
+      "schedule": "periodic",
+      "interval": 100,
+      "target": {
+        "device_type": "Q",
+        "ip": "192.168.1.20",
+        "tcp_udp": "UDP",
+        "cpu_no": 0
+      },
+      "word_device": {
+        "points": 32,
+        "src": {"type": "D", "start": 0, "end": 31},
+        "dst": {"type": "D", "start": 0, "end": 31}
+      },
+      "comment": "Q D32ワード読出"
+    },
+    {
+      "no": 2,
+      "pattern": "Read",
+      "schedule": "periodic",
+      "interval": 100,
+      "target": {
+        "device_type": "L",
+        "ip": "192.168.1.30",
+        "tcp_udp": "UDP",
+        "cpu_no": 0
+      },
+      "bit_device": {
+        "points": 16,
+        "src": {"type": "TS", "start": 0, "end": 15},
+        "dst": {"type": "M", "start": 0, "end": 15}
+      },
+      "comment": "L TS接点読出 (相手側TSはRead時のみ可)"
+    },
+    {
+      "no": 3,
+      "pattern": "Write",
+      "schedule": "request",
+      "target": {
+        "device_type": "Q-EU",
+        "ip": "192.168.1.40",
+        "tcp_udp": "UDP",
+        "cpu_no": 2
+      },
+      "word_device": {
+        "points": 10,
+        "src": {"type": "D", "start": 0, "end": 9},
+        "dst": {"type": "D", "start": 100, "end": 109}
+      },
+      "comment": "Q(Ethernetユニット) D10ワード書込"
+    }
+  ]
+}

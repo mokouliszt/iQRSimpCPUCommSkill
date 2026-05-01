@@ -1,0 +1,41 @@
+{
+  "_doc": "1設定でビット+ワード両方を扱う。Points/Startモード。iQ-Rでは ip_format は DEC 固定（HEX は GUI 編集不可で GX Works3 がインポート時に行を破棄するため）。",
+  "header": {
+    "file_version": "1",
+    "title": "mixed",
+    "target_unit": "R120CPU",
+    "local_ip": "192.168.3.39",
+    "ip_format": "DEC",
+    "device_assignment": "Points/Start",
+    "comm_start_wait": 30,
+    "initial_comm": "Enable"
+  },
+  "settings": [
+    {
+      "no": 1,
+      "pattern": "Read",
+      "schedule": "periodic",
+      "interval": 50,
+      "target": {
+        "device_type": "iQ-R",
+        "ip": "192.168.3.40",
+        "tcp_udp": "UDP",
+        "cpu_no": 0
+      },
+      "bit_device": {
+        "points": 256,
+        "src": {"type": "M", "start": 0, "end": 255},
+        "dst": {"type": "M", "start": 1024, "end": 1279}
+      },
+      "word_device": {
+        "points": 100,
+        "src": {"type": "D", "start": 0, "end": 99},
+        "dst": {"type": "D", "start": 0, "end": 99}
+      },
+      "timeout_ms": 2000,
+      "retry_count": 3,
+      "error_monitor_sec": 30,
+      "comment": "ビット256+ワード100 = 16+100 = 116ワード"
+    }
+  ]
+}

@@ -1,0 +1,75 @@
+{
+  "_doc": "交信相手=A/AnS(25)。port/local_portが必須(local_portは[1-4999]/[5010-65534])。Dの特殊範囲9000-9255も含む。",
+  "header": {
+    "file_version": "1",
+    "title": "a-ans-test",
+    "target_unit": "R16CPU",
+    "local_ip": "172.16.0.10",
+    "ip_format": "DEC",
+    "device_assignment": "Start/End",
+    "comm_start_wait": 10,
+    "initial_comm": "Disable"
+  },
+  "settings": [
+    {
+      "no": 1,
+      "pattern": "Read",
+      "schedule": "periodic",
+      "interval": 100,
+      "target": {
+        "device_type": "A",
+        "ip": "172.16.0.20",
+        "tcp_udp": "UDP",
+        "port": 5000,
+        "local_port": 4999,
+        "cpu_no": 0
+      },
+      "bit_device": {
+        "points": 32,
+        "src": {"type": "M", "start": 0, "end": 31},
+        "dst": {"type": "M", "start": 0, "end": 31}
+      },
+      "comment": "A/AnS M0-M31 読出"
+    },
+    {
+      "no": 2,
+      "pattern": "Write",
+      "schedule": "periodic",
+      "interval": 200,
+      "target": {
+        "device_type": 25,
+        "ip": "172.16.0.20",
+        "tcp_udp": "UDP",
+        "port": 5000,
+        "local_port": 5010,
+        "cpu_no": 0
+      },
+      "word_device": {
+        "points": 10,
+        "src": {"type": "D", "start": 0, "end": 9},
+        "dst": {"type": "D", "start": 9000, "end": 9009}
+      },
+      "error_monitor_sec": 30,
+      "comment": "A/AnS D9000-D9009 (9000+16k=9000) 書込"
+    },
+    {
+      "no": 3,
+      "pattern": "Read",
+      "schedule": "request",
+      "target": {
+        "device_type": 25,
+        "ip": "172.16.0.20",
+        "tcp_udp": "UDP",
+        "port": 5000,
+        "local_port": 5011,
+        "cpu_no": 0
+      },
+      "word_device": {
+        "points": 10,
+        "src": {"type": "D", "start": 9000, "end": 9009},
+        "dst": {"type": "D", "start": 0, "end": 9}
+      },
+      "comment": "A/AnS D9000-D9009 読出"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+# GX Works3 互換 CSV は UTF-16LE+BOM / CRLF 改行を厳密に保つ必要があるため、
+# git の改行変換 (core.autocrlf) を無効化する。
+*.csv binary
+
+# テキストファイルは LF 統一で扱う（Windows でチェックアウトしても autocrlf に従わない）
+*.py     text eol=lf
+*.md     text eol=lf
+*.json   text eol=lf
+*.yml    text eol=lf
+*.yaml   text eol=lf
+*.ini    text eol=lf
+*.toml   text eol=lf
+.gitignore     text eol=lf
+.gitattributes text eol=lf
+LICENSE        text eol=lf
