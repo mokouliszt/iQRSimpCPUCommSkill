@@ -10,12 +10,12 @@ GX Works3 が "シンプルCPU通信設定" 画面でインポート／エクス
 
 ## 姉妹 Skill との併用が前提です
 
-このSkillは単体でも動作しますが、**シーケンサのデバイス（X / Y / M / D / T 等）の知識** に依存するため、姉妹リポジトリ [mokouliszt/melsecRskills](https://github.com/mokouliszt/melsecRskills) と **組み合わせて使うことを前提に設計** されています。
+このSkillは単体でも動作しますが、**シーケンサのデバイス（X / Y / M / D / T 等）の知識** に依存するため、姉妹リポジトリ [mokouliszt/iqr-device-skill](https://github.com/mokouliszt/iqr-device-skill)) と **組み合わせて使うことを前提に設計** されています。
 
 | Skill | 役割 |
 |------|------|
-| [`melsec-iqr-device-overview`](https://github.com/mokouliszt/melsecRskills) | iQ-R デバイス全般の分類体系・命名規則・グローバル/ローカル区分・ラッチ・インデックス修飾などの**概念知識** |
-| [`melsec-iqr-device-specifications`](https://github.com/mokouliszt/melsecRskills) | 各デバイスの**数値スペック**（点数・範囲・基数・用途） |
+| [`melsec-iqr-device-overview`](https://github.com/mokouliszt/iqr-device-skill) | iQ-R デバイス全般の分類体系・命名規則・グローバル/ローカル区分・ラッチ・インデックス修飾などの**概念知識** |
+| [`melsec-iqr-device-specifications`](https://github.com/mokouliszt/iqr-device-skill) | 各デバイスの**数値スペック**（点数・範囲・基数・用途） |
 | `melsec-iqr-simple-cpu-comm-csv`（本リポジトリ） | 上記デバイス知識を踏まえた **シンプルCPU通信 CSV の生成・検証・解析** |
 
 3つを同時にインストールしておくことで、Claude が「このデバイスはシンプルCPU通信で扱えるか」「点数や先頭番号の制約は満たすか」を一貫した知識で判断できるようになります。
@@ -48,8 +48,6 @@ Claude Code の Skill ディレクトリに、`skills/melsec-iqr-simple-cpu-comm
 ```
 <your-project>/.claude/skills/melsec-iqr-simple-cpu-comm-csv/
 ```
-
-姉妹 Skill の [mokouliszt/melsecRskills](https://github.com/mokouliszt/melsecRskills) も同じ要領で配置してください。
 
 ## 使い方
 
